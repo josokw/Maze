@@ -29,14 +29,15 @@ int main(int argc, char *argv[]) {
     keypad(stdscr, TRUE);
     curs_set(0);
     nodelay(stdscr, TRUE);
-    clear();
-    mvprintw(0, 1, APPNAME_VERSION " ------------------------------------------"
-                                   "----------------------");
-    mvprintw(2, 1, "S(tudent) as fast a possible to 'ing' exit of maze!");
-    viewEcho();
+
     DrawXY(&PlayerPos);
     /* wait for RIGHT-arrow */
     while (TestArrow() != RIGHT) {
+        clear();
+        mvprintw(0, 1, APPNAME_VERSION " ------------------------------------------"
+                                       "----------------------");
+        mvprintw(2, 1, "S(tudent) as fast a possible to 'ing' exit of maze!");
+        viewEcho();
         usleep(10000);
     }
     StartTime = time(NULL);
