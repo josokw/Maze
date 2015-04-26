@@ -6,7 +6,7 @@ set( EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin )
 
 if( CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX )
   # Update if necessary
-  set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wextra" )
+  set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall -Wextra" )
 endif()
 
 add_executable( maze ${SRC_LIST} )
