@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
     initrandom();
 
     pWindow = initscr();
-    wresize(pWindow, 35, 100);
+    /* wresize(pWindow, 25, 85); */
     cbreak();
     noecho();
     nonl();
@@ -34,9 +34,6 @@ int main(int argc, char *argv[]) {
     /* wait for RIGHT-arrow */
     while (TestArrow() != RIGHT) {
         clear();
-        mvprintw(0, 1, APPNAME_VERSION " ------------------------------------------"
-                                       "----------------------");
-        mvprintw(2, 1, "S(tudent) as fast a possible to 'ing' exit of maze!");
         viewEcho();
         usleep(10000);
     }
@@ -49,9 +46,6 @@ int main(int argc, char *argv[]) {
             DemonAction(&DemonsPos[i]);
             PlayerAction();
             clear();
-            mvprintw(0, 1, APPNAME_VERSION " ------------------------------------------"
-                                           "----------------------");
-            mvprintw(2, 1, "S(tudent) as fast a possible to 'ing' exit of maze!");
             viewEcho();
         }
         ShowTime(StartTime, time(NULL), 25, 1);

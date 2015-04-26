@@ -89,6 +89,9 @@ void viewEcho(void)
     int X = 0;
     int Y = 0;
 
+    mvprintw(0, 1, APPNAME_VERSION " ------------------------------------------"
+                                   "----------------------");
+    mvprintw(2, 1, "S(tudent) as fast a possible to 'ing' exit of maze!");
     for (Y = SCRNMINY; Y < SCRNMAXY; Y++)
     {
         for (X = SCRNMINX; X < SCRNMAXX; X++)
