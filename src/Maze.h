@@ -21,19 +21,18 @@
 #define SPACE ' '
 #define DEMONS 8
 
-typedef struct ScrnPosXY
-{
+typedef struct ScrnPosXY {
     int ScrnX;
     int ScrnY;
     char Player;
 } ScrnPosXY;
 
 extern struct ScrnPosXY PlayerPos;
-extern struct ScrnPosXY DemonsPos[DEMONS];
+extern struct ScrnPosXY DemonsPos[];
 
 void InitPlayerDemons(char *PlayerDemons, char Dmn, int PosX, int PosY);
 void LoadMaze(const char *Fname);
-void InitMaze(void);
+void viewEcho(void);
 int TestMove(struct ScrnPosXY *pPosXY, int Direction);
 int TestArrow(void);
 void ShowTime(time_t StartTime, time_t PlayTime, int Xtxt, int Ytxt);

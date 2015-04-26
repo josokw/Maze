@@ -8,13 +8,20 @@
 #include <time.h>
 #include <unistd.h>
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     volatile time_t StartTime;
     volatile time_t EndTime;
+    WINDOW* pWindow = NULL;
 
+    if(argc != 2) {
+        fprintf(stderr, "\n\tUsage " APPNAME  ": %s <file name>\n\n", argv[0]);
+        exit(EXIT_FAILURE);
+    }
+    LoadMaze(argv[1]);
     initrandom();
-    initscr(); /* Start curses mode */
+
+    pWindow = initscr();
+    wresize(pWindow, 35, 100);
     cbreak();
     noecho();
     nonl();
@@ -22,36 +29,35 @@ int main(int argc, char *argv[])
     keypad(stdscr, TRUE);
     curs_set(0);
     nodelay(stdscr, TRUE);
-    clear(); /* Clear screen */
+    clear();
     mvprintw(0, 1, APPNAME_VERSION " ------------------------------------------"
                                    "----------------------");
     mvprintw(2, 1, "S(tudent) as fast a possible to 'ing' exit of maze!");
-    refresh();
-
-    if (argc != 2)
-    {
-        exit(EXIT_FAILURE);
-    }
-    LoadMaze(argv[1]);
+    viewEcho();
     DrawXY(&PlayerPos);
     /* wait for RIGHT-arrow */
-    while (TestArrow() != RIGHT);
+    while (TestArrow() != RIGHT) {
+        usleep(10000);
+    }
     StartTime = time(NULL);
-    while (!IsAtIng())
-    {
+    while(!IsAtIng()) {
         int i = 0;
-        /* ING not reached !! */
-        for (i = 0; i < DEMONS; i++)
-        {
+        /* Ing not reached !! */
+        for (i = 0; i < DEMONS; i++) {
             PlayerAction();
             DemonAction(&DemonsPos[i]);
             PlayerAction();
+            clear();
+            mvprintw(0, 1, APPNAME_VERSION " ------------------------------------------"
+                                           "----------------------");
+            mvprintw(2, 1, "S(tudent) as fast a possible to 'ing' exit of maze!");
+            viewEcho();
         }
         ShowTime(StartTime, time(NULL), 25, 1);
         usleep(50000);
     }
     EndTime = time(NULL);
-    mvprintw(20, 27, "Time: %7.0f sec.", difftime(EndTime, StartTime));
+    mvprintw(25, 1, "Time: %7.0f sec.", difftime(EndTime, StartTime));
     refresh();
     nodelay(stdscr, FALSE);
     getchar();

@@ -1,3 +1,4 @@
+#include "AppInfo.h"
 #include "Maze.h"
 #include "Utils.h"
 
@@ -45,16 +46,16 @@ void LoadMaze(const char *Fname)
     {
         for (X=0; X <= SCRNMAXX; X++)
         {
-            Maze[X][Y] = ' ';
+            Maze[X][Y] = SPACE;
         }
     }
 
     if ((fp = fopen(Fname, "r")) == NULL)
     {
-        printf("\n\n");
+        fprintf(stderr, "\n\tERROR " APPNAME " ");
         perror(Fname);
-        printf("\n\n");
-        exit(1);
+        fprintf(stderr, "\n");
+        exit(EXIT_FAILURE);
     }
     else
     {
@@ -80,16 +81,22 @@ void LoadMaze(const char *Fname)
             Y++;
         }
         fclose(fp);
-
-        for (Y = SCRNMINY; Y < SCRNMAXY; Y++)
-        {
-            for (X = SCRNMINX; X < SCRNMAXX; X++)
-            {
-                mvprintw(Y, X, "%c", Maze[X][Y]);
-            }
-        }
-        refresh();
     }
+}
+
+void viewEcho(void)
+{
+    int X = 0;
+    int Y = 0;
+
+    for (Y = SCRNMINY; Y < SCRNMAXY; Y++)
+    {
+        for (X = SCRNMINX; X < SCRNMAXX; X++)
+        {
+            mvprintw(Y, X, "%c", Maze[X][Y]);
+        }
+    }
+    refresh();
 }
 
 void ShowTime(time_t StartTime, time_t PlayTime, int Xtxt, int Ytxt)
