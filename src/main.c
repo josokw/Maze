@@ -5,7 +5,7 @@
 #include <ncurses.h>
 #include <signal.h>
 #include <stdlib.h>
-//#include <unistd.h>
+#include <unistd.h>
 
 void handleResize(int signal) {
     clear();
@@ -15,7 +15,6 @@ void handleResize(int signal) {
 int main(int argc, char *argv[]) {
     struct sigaction sig;
     volatile time_t startTime;
-    WINDOW* pWindow = NULL;
 
     if(argc != 2) {
         fprintf(stderr, "\n\tUsage " APPNAME  ": %s <file name>\n\n", argv[0]);
@@ -28,8 +27,7 @@ int main(int argc, char *argv[]) {
     sig.sa_flags = 0;
     sigaction(SIGWINCH, &sig, 0);
 
-    pWindow = initscr();
-    //wresize(pWindow, 25, 85);
+    initscr();
     cbreak();
     noecho();
     nonl();
@@ -40,7 +38,7 @@ int main(int argc, char *argv[]) {
 
     drawXY(&player);
     viewEcho();
-    /* wait for RIGHT-arrow */
+    /* wait for RIGHT-arrow key */
     while (testArrowKey() != RIGHT) {
         usleep(50000);
     }
