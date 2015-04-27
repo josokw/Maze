@@ -2,11 +2,9 @@
 #define MAZE_H
 
 #include <time.h>
-#include <ncurses.h>
 
 #define FALSE 0
 #define TRUE 1
-#define FOREVER	TRUE
 
 #define SCRNMINX 3
 #define SCRNMAXX 130
@@ -21,26 +19,26 @@
 #define SPACE ' '
 #define DEMONS 8
 
-typedef struct ScrnPosXY {
+typedef struct {
     int ScrnX;
     int ScrnY;
     char Player;
-} ScrnPosXY;
+} scrnPosXY_t;
 
-extern struct ScrnPosXY PlayerPos;
-extern struct ScrnPosXY DemonsPos[];
+extern scrnPosXY_t player;
+extern scrnPosXY_t demons[];
 
 void initPlayerDemons(char *PlayerDemons, char Dmn, int PosX, int PosY);
 void loadMaze(const char *Fname);
 void viewEcho(void);
-int TestMove(struct ScrnPosXY *pPosXY, int Direction);
-int TestArrow(void);
-void showTime(time_t StartTime, time_t PlayTime, int Xtxt, int Ytxt);
-void DrawXY(struct ScrnPosXY *PosXY);
+int testMovement(const scrnPosXY_t *pPosXY, int Direction);
+int testArrowKey(void);
+void showTime(time_t startTime, time_t playTime, int Xtxt, int Ytxt);
+void drawXY(const scrnPosXY_t *PosXY);
 int isAtExit(void);
-void MoveXY(struct ScrnPosXY *pPosXY, int Direction);
-void PlayerAction(void);
-void DemonAction(struct ScrnPosXY *Demon);
-int StrategyAction(struct ScrnPosXY Demon, int Strategy);
+void moveXY(scrnPosXY_t *pPosXY, int Direction);
+void playerAction(void);
+void demonAction(scrnPosXY_t *Demon);
+int strategyAction(const scrnPosXY_t *pDemon, int Strategy);
 
 #endif

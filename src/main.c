@@ -5,9 +5,7 @@
 #include <ncurses.h>
 #include <signal.h>
 #include <stdlib.h>
-#include <stdio.h>
-#include <time.h>
-#include <unistd.h>
+//#include <unistd.h>
 
 void handleResize(int signal) {
     clear();
@@ -40,10 +38,10 @@ int main(int argc, char *argv[]) {
     curs_set(0);
     nodelay(stdscr, TRUE);
 
-    DrawXY(&PlayerPos);
+    drawXY(&player);
     viewEcho();
     /* wait for RIGHT-arrow */
-    while (TestArrow() != RIGHT) {
+    while (testArrowKey() != RIGHT) {
         usleep(50000);
     }
     startTime = time(NULL);
@@ -51,9 +49,9 @@ int main(int argc, char *argv[]) {
         int i = 0;
         /* exit not reached !! */
         for (i = 0; i < DEMONS; i++) {
-            PlayerAction();
-            DemonAction(&DemonsPos[i]);
-            PlayerAction();
+            playerAction();
+            demonAction(&demons[i]);
+            playerAction();
             viewEcho();
         }
         showTime(startTime, time(NULL), 1, 15);

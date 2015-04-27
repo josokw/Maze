@@ -2,79 +2,74 @@
 #include "Maze.h"
 #include "Utils.h"
 
+#include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
-static char Maze[SCRNMAXX+1][SCRNMAXY+1] = {{0, 0}};
+static char maze[SCRNMAXX + 1][SCRNMAXY +1 ] = {{0, 0}};
 
-struct ScrnPosXY PlayerPos;
-struct ScrnPosXY DemonsPos[DEMONS];
+scrnPosXY_t player;
+scrnPosXY_t demons[DEMONS];
 
-void initPlayerDemons(char *PlayerDemons, char Dmn, int PosX, int PosY)
-{
-    static int count = 0;
+static void initMaze(void) {
+    int X = 0;
+    int Y = 0;
 
-    if ((count < DEMONS) && (Dmn != ' ')) {
-        if (strchr(PlayerDemons, Dmn) != NULL)
-        {
-            if (Dmn == PlayerDemons[0])
-            {
-                PlayerPos.Player = Dmn;
-                PlayerPos.ScrnX	= PosX;
-                PlayerPos.ScrnY	= PosY;
+    for (Y = 0; Y <= SCRNMAXY; Y++) {
+        for (X = 0; X <= SCRNMAXX; X++) {
+            maze[X][Y] = SPACE;
+        }
+    }
+}
+
+void initPlayerDemons(char *PlayerDemons, char demon, int posX, int posY) {
+    static int idx = 0;
+
+    if ((idx < DEMONS) && (demon != ' ')) {
+        if (strchr(PlayerDemons, demon) != NULL) {
+            if (demon == PlayerDemons[0]) {
+                player.Player = demon;
+                player.ScrnX	= posX;
+                player.ScrnY	= posY;
             }
-            else
-            {
-                DemonsPos[count].Player = Dmn;
-                DemonsPos[count].ScrnX	= PosX;
-                DemonsPos[count].ScrnY	= PosY;
-                count++;
+            else {
+                demons[idx].Player = demon;
+                demons[idx].ScrnX	= posX;
+                demons[idx].ScrnY	= posY;
+                idx++;
             }
         }
     }
 }
 
-void loadMaze(const char *Fname)
-{
+void loadMaze(const char *mazeFileName) {
     int X = 0;
     int Y = 0;
     FILE *fp = NULL;
-    char PlayerDemons[80] = {'\0'};
+    char playerDemons[80] = {'\0'};
 
-    for (Y=0; Y <= SCRNMAXY; Y++)
-    {
-        for (X=0; X <= SCRNMAXX; X++)
-        {
-            Maze[X][Y] = SPACE;
-        }
-    }
-
-    if ((fp = fopen(Fname, "r")) == NULL)
-    {
+    initMaze();
+    if ((fp = fopen(mazeFileName, "r")) == NULL) {
         fprintf(stderr, "\n\tERROR " APPNAME " ");
-        perror(Fname);
+        perror(mazeFileName);
         fprintf(stderr, "\n");
         exit(EXIT_FAILURE);
     }
-    else
-    {
-        if (!feof(fp))
-        {
-            fscanf(fp, "%s", PlayerDemons);
+    else {
+        if (!feof(fp)) {
+            fscanf(fp, "%s", playerDemons);
         }
         Y = SCRNMINY;
-        while ((!feof(fp)) && (Y <= SCRNMAXY))
-        {
+        while ((!feof(fp)) && (Y <= SCRNMAXY)) {
             X = SCRNMINX;
-            while ((!feof(fp)) && (X <= SCRNMAXX))
-            {
-                char Temp;
-                fscanf(fp, "%c", &Temp);
-                initPlayerDemons(PlayerDemons, Temp, X, Y);
-                if (Temp != '\n')
-                {
-                    Maze[X++][Y] = Temp;
+            while ((!feof(fp)) && (X <= SCRNMAXX)) {
+                char temp;
+                fscanf(fp, "%c", &temp);
+                initPlayerDemons(playerDemons, temp, X, Y);
+                if (temp != '\n') {
+                    maze[X++][Y] = temp;
                 }
                 else break;
             }
@@ -84,30 +79,25 @@ void loadMaze(const char *Fname)
     }
 }
 
-void viewEcho(void)
-{
+void viewEcho(void) {
     int X = 0;
     int Y = 0;
 
     mvprintw(1, 1, APPNAME_VERSION);
-    for (Y = SCRNMINY; Y < SCRNMAXY; Y++)
-    {
-        for (X = SCRNMINX; X < SCRNMAXX; X++)
-        {
-            mvprintw(Y, X, "%c", Maze[X][Y]);
+    for (Y = SCRNMINY; Y < SCRNMAXY; Y++) {
+        for (X = SCRNMINX; X < SCRNMAXX; X++) {
+            mvprintw(Y, X, "%c", maze[X][Y]);
         }
     }
     refresh();
 }
 
-void showTime(time_t startTime, time_t playTime, int Xtxt, int Ytxt)
-{
+void showTime(time_t startTime, time_t playTime, int Xtxt, int Ytxt) {
     mvprintw(Xtxt, Ytxt, "time: %.0lf sec", difftime(playTime, startTime));
     refresh();
 }
 
-int TestArrow(void)
-{
+int testArrowKey(void) {
     switch (getch())
     {
     case KEY_UP: return(UP);
@@ -118,60 +108,52 @@ int TestArrow(void)
     return 0;
 }
 
-void DrawXY(struct ScrnPosXY *PosXY)
-{
-    mvprintw (PosXY->ScrnY, PosXY->ScrnX, "%c", PosXY->Player);
+void drawXY(const scrnPosXY_t *posXY) {
+    mvprintw (posXY->ScrnY, posXY->ScrnX, "%c", posXY->Player);
     refresh();
 }
 
-int isAtExit(void)
-{
-    return (((PlayerPos.ScrnX > 64) && (PlayerPos.ScrnY > 18)) ? TRUE : FALSE);
+int isAtExit(void) {
+    return (((player.ScrnX > 64) && (player.ScrnY > 18)) ? TRUE : FALSE);
 }
 
-int TestMove(struct ScrnPosXY *pPosXY, int Direction)
-{
-    switch (Direction)
+int testMovement(const scrnPosXY_t *pPosXY, int direction) {
+    switch (direction)
     {
     case UP:
-        return (Maze[pPosXY->ScrnX][pPosXY->ScrnY - 1] == ' ');
+        return (maze[pPosXY->ScrnX][pPosXY->ScrnY - 1] == ' ');
     case DOWN:
-        return (Maze[pPosXY->ScrnX][pPosXY->ScrnY + 1] == ' ');
+        return (maze[pPosXY->ScrnX][pPosXY->ScrnY + 1] == ' ');
     case LEFT:
-        return (Maze[pPosXY->ScrnX - 1][pPosXY->ScrnY] == ' ');
+        return (maze[pPosXY->ScrnX - 1][pPosXY->ScrnY] == ' ');
     case RIGHT:
-        return (Maze[pPosXY->ScrnX + 1][pPosXY->ScrnY] == ' ');
+        return (maze[pPosXY->ScrnX + 1][pPosXY->ScrnY] == ' ');
     }
-    return(-1);
+    return (-1);
 }
 
-void MoveXY(struct ScrnPosXY *pPosXY, int Direction)
-{
+void moveXY(scrnPosXY_t *pPosXY, int Direction) {
     mvprintw(pPosXY->ScrnY, pPosXY->ScrnX, " ");
-    Maze[pPosXY->ScrnX][pPosXY->ScrnY] = SPACE;
+    maze[pPosXY->ScrnX][pPosXY->ScrnY] = SPACE;
     switch (Direction)
     {
     case UP:
-        if ((pPosXY->ScrnY > SCRNMINY) && TestMove(pPosXY, UP))
-        {
+        if ((pPosXY->ScrnY > SCRNMINY) && testMovement(pPosXY, UP)) {
             (pPosXY->ScrnY)--;
         }
         break;
     case DOWN:
-        if ((pPosXY->ScrnY < SCRNMAXY) && TestMove(pPosXY, DOWN))
-        {
+        if ((pPosXY->ScrnY < SCRNMAXY) && testMovement(pPosXY, DOWN)) {
             (pPosXY->ScrnY)++;
         }
         break;
     case RIGHT:
-        if ((pPosXY->ScrnX < SCRNMAXX) && TestMove(pPosXY, RIGHT))
-        {
+        if ((pPosXY->ScrnX < SCRNMAXX) && testMovement(pPosXY, RIGHT)) {
             (pPosXY->ScrnX)++;
         }
         break;
     case LEFT:
-        if ((pPosXY->ScrnX > SCRNMINX) && TestMove(pPosXY, LEFT))
-        {
+        if ((pPosXY->ScrnX > SCRNMINX) && testMovement(pPosXY, LEFT)) {
             (pPosXY->ScrnX)--;
         }
         break;
@@ -180,22 +162,20 @@ void MoveXY(struct ScrnPosXY *pPosXY, int Direction)
     mvprintw(pPosXY->ScrnY, pPosXY->ScrnX, "%c", pPosXY->Player);
     attroff(A_BOLD);
     refresh();
-    Maze[pPosXY->ScrnX][pPosXY->ScrnY] = pPosXY->Player;
+    maze[pPosXY->ScrnX][pPosXY->ScrnY] = pPosXY->Player;
 }
 
-void PlayerAction(void)
-{
+void playerAction(void) {
     switch (getch())
     {
-    case KEY_UP: MoveXY(&PlayerPos, UP); break;
-    case KEY_LEFT: MoveXY(&PlayerPos, LEFT); break;
-    case KEY_RIGHT: MoveXY(&PlayerPos, RIGHT); break;
-    case KEY_DOWN: MoveXY(&PlayerPos, DOWN); break;
+    case KEY_UP: moveXY(&player, UP); break;
+    case KEY_LEFT: moveXY(&player, LEFT); break;
+    case KEY_RIGHT: moveXY(&player, RIGHT); break;
+    case KEY_DOWN: moveXY(&player, DOWN); break;
     }
 }
 
-int StrategyAction(struct ScrnPosXY demon, int strategy)
-{
+int strategyAction(const scrnPosXY_t *pDemon, int strategy) {
     switch (strategy)
     {
     case 0:
@@ -203,29 +183,24 @@ int StrategyAction(struct ScrnPosXY demon, int strategy)
     case 1:
         return (randomRange(4) + 1);
     case 2:
-        if (demon.ScrnY < PlayerPos.ScrnY)
-        {
+        if (pDemon->ScrnY < player.ScrnY) {
             return (DOWN);
         }
-        if (demon.ScrnY > PlayerPos.ScrnY)
-        {
+        if (pDemon->ScrnY > player.ScrnY) {
             return (UP);
         }
         break;
     case 3:
-        if (demon.ScrnX < PlayerPos.ScrnX)
-        {
+        if (pDemon->ScrnX < player.ScrnX) {
             return (RIGHT);
         }
-        if (demon.ScrnX > PlayerPos.ScrnX)
-        {
+        if (pDemon->ScrnX > player.ScrnX) {
             return (LEFT);
         }
     }
     return (0);
 }
 
-void DemonAction(struct ScrnPosXY *Demon)
-{
-    MoveXY(Demon, StrategyAction(*Demon, randomRange(5)));
+void demonAction(scrnPosXY_t *pDemon) {
+    moveXY(pDemon, strategyAction(pDemon, randomRange(5)));
 }
