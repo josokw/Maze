@@ -22,6 +22,9 @@
 *.x86_64
 *.hex
 
+# Backup files
+*~
+
 # CMake
 CMakeLists.txt.user
 CMakeCache.txt
