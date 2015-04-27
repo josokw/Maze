@@ -3,17 +3,19 @@ Maze C program using ncurses. The maze, the player and demons are represented by
 
 Build
 -----
-CMake must be installed.
+CMake must be available. Goto the Maze directory.
 
     cd Maze
-    cmake CMakeLists.txt
+    mkdir build
+    cd build
+    cmake ..
     make
   
 Executing
 ---------
 Maze needs a text file containing the maze and a string containing the player and the demons.
 
-    cd bin
+    cd ../bin
     ./maze ../data/maze01.dat
   
 Example maze data file
