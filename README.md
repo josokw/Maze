@@ -18,6 +18,7 @@ Maze needs a text file containing the maze and a string containing the player an
   
 Example maze data file
 ----------------------
+S must try to reach ing in the most shortest time. The demoms are: oOdDvVxX, they will annoy you.
 
     SoOdDvVxX
     ************************            ********************        *********
