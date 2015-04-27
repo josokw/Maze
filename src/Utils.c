@@ -3,14 +3,12 @@
 
 #include "Utils.h"
 
-void initrandom(void)
-{
+void initRandom(void) {
   /* Set seed value based on time info for random generator */
   srand((unsigned int)time((time_t *)NULL));
 }
 
-int random2(int range)
-{
+int randomRange(int range) {
   return (rand() % range) + 1;
 }
 

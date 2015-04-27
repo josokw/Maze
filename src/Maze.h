@@ -8,9 +8,9 @@
 #define TRUE 1
 #define FOREVER	TRUE
 
-#define SCRNMINX 4
+#define SCRNMINX 3
 #define SCRNMAXX 130
-#define SCRNMINY 4
+#define SCRNMINY 2
 #define SCRNMAXY 50
 
 #define UP 1
@@ -30,18 +30,17 @@ typedef struct ScrnPosXY {
 extern struct ScrnPosXY PlayerPos;
 extern struct ScrnPosXY DemonsPos[];
 
-void InitPlayerDemons(char *PlayerDemons, char Dmn, int PosX, int PosY);
-void LoadMaze(const char *Fname);
+void initPlayerDemons(char *PlayerDemons, char Dmn, int PosX, int PosY);
+void loadMaze(const char *Fname);
 void viewEcho(void);
 int TestMove(struct ScrnPosXY *pPosXY, int Direction);
 int TestArrow(void);
-void ShowTime(time_t StartTime, time_t PlayTime, int Xtxt, int Ytxt);
+void showTime(time_t StartTime, time_t PlayTime, int Xtxt, int Ytxt);
 void DrawXY(struct ScrnPosXY *PosXY);
-int IsAtIng(void);
+int isAtExit(void);
 void MoveXY(struct ScrnPosXY *pPosXY, int Direction);
 void PlayerAction(void);
 void DemonAction(struct ScrnPosXY *Demon);
 int StrategyAction(struct ScrnPosXY Demon, int Strategy);
-void Play(void);
 
 #endif

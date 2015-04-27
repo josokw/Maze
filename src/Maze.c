@@ -11,11 +11,11 @@ static char Maze[SCRNMAXX+1][SCRNMAXY+1] = {{0, 0}};
 struct ScrnPosXY PlayerPos;
 struct ScrnPosXY DemonsPos[DEMONS];
 
-void InitPlayerDemons(char *PlayerDemons, char Dmn, int PosX, int PosY)
+void initPlayerDemons(char *PlayerDemons, char Dmn, int PosX, int PosY)
 {
-    static int Count = 0;
+    static int count = 0;
 
-    if ((Count < DEMONS) && (Dmn != ' ')) {
+    if ((count < DEMONS) && (Dmn != ' ')) {
         if (strchr(PlayerDemons, Dmn) != NULL)
         {
             if (Dmn == PlayerDemons[0])
@@ -26,16 +26,16 @@ void InitPlayerDemons(char *PlayerDemons, char Dmn, int PosX, int PosY)
             }
             else
             {
-                DemonsPos[Count].Player = Dmn;
-                DemonsPos[Count].ScrnX	= PosX;
-                DemonsPos[Count].ScrnY	= PosY;
-                Count++;
+                DemonsPos[count].Player = Dmn;
+                DemonsPos[count].ScrnX	= PosX;
+                DemonsPos[count].ScrnY	= PosY;
+                count++;
             }
         }
     }
 }
 
-void LoadMaze(const char *Fname)
+void loadMaze(const char *Fname)
 {
     int X = 0;
     int Y = 0;
@@ -71,7 +71,7 @@ void LoadMaze(const char *Fname)
             {
                 char Temp;
                 fscanf(fp, "%c", &Temp);
-                InitPlayerDemons(PlayerDemons, Temp, X, Y);
+                initPlayerDemons(PlayerDemons, Temp, X, Y);
                 if (Temp != '\n')
                 {
                     Maze[X++][Y] = Temp;
@@ -89,9 +89,7 @@ void viewEcho(void)
     int X = 0;
     int Y = 0;
 
-    mvprintw(0, 1, APPNAME_VERSION " ------------------------------------------"
-                                   "----------------------");
-    mvprintw(2, 1, "S(tudent) as fast a possible to 'ing' exit of maze!");
+    mvprintw(1, 1, APPNAME_VERSION);
     for (Y = SCRNMINY; Y < SCRNMAXY; Y++)
     {
         for (X = SCRNMINX; X < SCRNMAXX; X++)
@@ -102,9 +100,9 @@ void viewEcho(void)
     refresh();
 }
 
-void ShowTime(time_t StartTime, time_t PlayTime, int Xtxt, int Ytxt)
+void showTime(time_t startTime, time_t playTime, int Xtxt, int Ytxt)
 {
-    mvprintw(Xtxt, Ytxt, "Time: %6.0f sec.", difftime(PlayTime, StartTime));
+    mvprintw(Xtxt, Ytxt, "time: %.0lf sec", difftime(playTime, startTime));
     refresh();
 }
 
@@ -126,9 +124,9 @@ void DrawXY(struct ScrnPosXY *PosXY)
     refresh();
 }
 
-int IsAtIng(void)
+int isAtExit(void)
 {
-    return (((PlayerPos.ScrnX > 65) && (PlayerPos.ScrnY > 20)) ? TRUE : FALSE);
+    return (((PlayerPos.ScrnX > 64) && (PlayerPos.ScrnY > 18)) ? TRUE : FALSE);
 }
 
 int TestMove(struct ScrnPosXY *pPosXY, int Direction)
@@ -150,7 +148,6 @@ int TestMove(struct ScrnPosXY *pPosXY, int Direction)
 void MoveXY(struct ScrnPosXY *pPosXY, int Direction)
 {
     mvprintw(pPosXY->ScrnY, pPosXY->ScrnX, " ");
-    //refresh();
     Maze[pPosXY->ScrnX][pPosXY->ScrnY] = SPACE;
     switch (Direction)
     {
@@ -197,30 +194,30 @@ void PlayerAction(void)
     }
 }
 
-int StrategyAction(struct ScrnPosXY Demon, int Strategy)
+int StrategyAction(struct ScrnPosXY demon, int strategy)
 {
-    switch (Strategy)
+    switch (strategy)
     {
     case 0:
         return (0);
     case 1:
-        return (random2(4) + 1);
+        return (randomRange(4) + 1);
     case 2:
-        if (Demon.ScrnY < PlayerPos.ScrnY)
+        if (demon.ScrnY < PlayerPos.ScrnY)
         {
             return (DOWN);
         }
-        if (Demon.ScrnY > PlayerPos.ScrnY)
+        if (demon.ScrnY > PlayerPos.ScrnY)
         {
             return (UP);
         }
         break;
     case 3:
-        if (Demon.ScrnX < PlayerPos.ScrnX)
+        if (demon.ScrnX < PlayerPos.ScrnX)
         {
             return (RIGHT);
         }
-        if (Demon.ScrnX > PlayerPos.ScrnX)
+        if (demon.ScrnX > PlayerPos.ScrnX)
         {
             return (LEFT);
         }
@@ -230,5 +227,5 @@ int StrategyAction(struct ScrnPosXY Demon, int Strategy)
 
 void DemonAction(struct ScrnPosXY *Demon)
 {
-    MoveXY(Demon, StrategyAction(*Demon, random2(5)));
+    MoveXY(Demon, StrategyAction(*Demon, randomRange(5)));
 }

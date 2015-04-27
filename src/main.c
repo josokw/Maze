@@ -3,25 +3,35 @@
 #include "Utils.h"
 
 #include <ncurses.h>
+#include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
 
+void handleResize(int signal) {
+    clear();
+    viewEcho();
+}
+
 int main(int argc, char *argv[]) {
-    volatile time_t StartTime;
-    volatile time_t EndTime;
+    struct sigaction sig;
+    volatile time_t startTime;
     WINDOW* pWindow = NULL;
 
     if(argc != 2) {
         fprintf(stderr, "\n\tUsage " APPNAME  ": %s <file name>\n\n", argv[0]);
         exit(EXIT_FAILURE);
     }
-    LoadMaze(argv[1]);
-    initrandom();
+    loadMaze(argv[1]);
+    initRandom();
+
+    sig.sa_handler = handleResize;
+    sig.sa_flags = 0;
+    sigaction(SIGWINCH, &sig, 0);
 
     pWindow = initscr();
-    /* wresize(pWindow, 25, 85); */
+    //wresize(pWindow, 25, 85);
     cbreak();
     noecho();
     nonl();
@@ -31,33 +41,30 @@ int main(int argc, char *argv[]) {
     nodelay(stdscr, TRUE);
 
     DrawXY(&PlayerPos);
+    viewEcho();
     /* wait for RIGHT-arrow */
     while (TestArrow() != RIGHT) {
-        clear();
-        viewEcho();
-        usleep(10000);
+        usleep(50000);
     }
-    StartTime = time(NULL);
-    while(!IsAtIng()) {
+    startTime = time(NULL);
+    while(!isAtExit()) {
         int i = 0;
-        /* Ing not reached !! */
+        /* exit not reached !! */
         for (i = 0; i < DEMONS; i++) {
             PlayerAction();
             DemonAction(&DemonsPos[i]);
             PlayerAction();
-            clear();
             viewEcho();
         }
-        ShowTime(StartTime, time(NULL), 25, 1);
+        showTime(startTime, time(NULL), 1, 15);
         usleep(50000);
     }
-    EndTime = time(NULL);
-    mvprintw(25, 1, "Time: %7.0f sec.", difftime(EndTime, StartTime));
     refresh();
     nodelay(stdscr, FALSE);
-    getchar();
+    while (getchar() != 'q') {
+        /* wait for <q> quit */
+    }
     endwin();
 
     return 0;
 }
-
