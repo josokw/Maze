@@ -42,3 +42,6 @@ S (student) must try to reach ing in the most shortest time. The demons are: oOd
            ****    *                ***      **    *       *   **    Ing   *
            * O     *                  ***       *          *    **         *
            *********                    ********************     ***********
+
+TCK == Technische ComputerKunde. 
+Ing == HBO ingenieur (bachelor degree).
