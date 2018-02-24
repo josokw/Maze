@@ -43,6 +43,6 @@ S (student) must try to reach ing in the most shortest time. The demons are: oOd
            * O     *                  ***       *          *    **         *
            *********                    ********************     ***********
 
-TCK == Technische ComputerKunde (Dutch).
+TCK == Technische ComputerKunde (Dutch, Computer Engineering).
 
-Ing == HBO ingenieur (Dutch bachelor degree).
+Ing == HBO ingenieur (Dutch, bachelor engineering degree).
