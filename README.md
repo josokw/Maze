@@ -1,6 +1,6 @@
 # Maze
 
-The maze program uses the ncurses library that allows programmers to write 
+The maze program uses the ncurses library that allows programmers to write
 text-based user interfaces.
 The maze, the player and the demons are represented by characters.
 
@@ -19,7 +19,7 @@ CMake must be installed. Goto the Maze directory.
   
 ## Executing 'maze'
 
-Maze needs a text file as input containing the maze and a string containing 
+Maze needs a text file as input containing the maze and a string containing
 the player and the demons. The executable is found in the bin directory.
 
     cd ../bin
@@ -51,6 +51,6 @@ The demons are: oOdDvVxX, they will annoy you.
            * O     *                  ***       *          *    **         *
            *********                    ********************     ***********
 
-### TCK == Technische ComputerKunde (Dutch, Computer Engineering).
+### TCK == Technische ComputerKunde (Dutch, Computer Engineering)
 
-### Ing == HBO ingenieur (Dutch, bachelor of engineering degree).
+### Ing == HBO ingenieur (Dutch, bachelor of engineering degree)
