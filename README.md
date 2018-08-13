@@ -1,5 +1,7 @@
 # Maze
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/827f3e14d67f432586e920f4a3009366)](https://www.codacy.com/project/josokw/Maze/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=josokw/Maze&amp;utm_campaign=Badge_Grade_Dashboard)
+
 The maze program uses the ncurses library that allows programmers to write
 text-based user interfaces.
 The maze, the player and the demons are represented by characters.
