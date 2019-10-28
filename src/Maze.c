@@ -8,6 +8,9 @@
 #include <string.h>
 #include <time.h>
 
+#define ATEXIT_Y 18
+#define ATEXIT_X 65
+
 static char maze[SCRNMAXX + 1][SCRNMAXY + 1] = {{0, 0}};
 
 scrnPosXY_t player;
@@ -123,7 +126,7 @@ void drawXY(const scrnPosXY_t *posXY)
 
 int isAtExit(void)
 {
-   return (player.ScrnX > 64) && (player.ScrnY > 18);
+   return (player.ScrnX > ATEXIT_X) && (player.ScrnY > ATEXIT_Y);
 }
 
 int testMovement(const scrnPosXY_t *pPosXY, int direction)
