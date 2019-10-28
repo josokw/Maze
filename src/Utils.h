@@ -3,5 +3,6 @@
 
 void initRandom(void);
 int randomRange(int range);
+void waitfor(char c);
 
 #endif

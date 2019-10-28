@@ -1,10 +1,10 @@
 # Maze
 
 The maze program uses the ncurses library that allows programmers to write
-text-based user interfaces.
-The maze, the player and the demons are represented by characters.
+text-based user interfaces. The maze, the player and the demons are represented
+by characters.
 
-Installation ncurses Ubuntu:
+Installation __ncurses__ Ubuntu:
 
     sudo apt install libncurses5-dev libncursesw5-dev
 
@@ -27,30 +27,26 @@ the player and the demons. The executable is found in the bin directory.
 
 ## Example 'maze' data file
 
-S (student) must try to reach 'ing' in the most shortest time.
-The demons are: oOdDvVxX, they will annoy you.
+X must try to reach 'exit' in the most shortest time.
+The demons are: **o**, **#** and **+**, they will annoy you.
 
-    SoOdDvVxX
+    Xo#+
     ************************            ********************        *********
-    *X       *     *       *          ***    *           * *       **       *
-    **  **   *  *  *   *   *        *** *       ** ****D   *      **    d   *
+    *o       *     *       *          ***    *           * *       **       *
+    **  **   *  *  *   *   *        *** *       ** ****#   *      **    +   *
     *    *      *****  *   *      ***   ** **      *       *     **         *
-    S  * **     *      **  *******              *     ******    **   ***    *
+    X  * **     *      **  *******              *     ******    **   ***    *
     *  *       **  *   *        *       ************   *   *   **      *  **
     ********   *   **********   **    ***          *   *   *  **    *    **
            *   *  o*        * *  *   **               **   * **    **   **
-           *  **   *        *    *   *           * *       ***   ** V  **
+           *  **   *        *    *   *           * *       ***   ** +  **
            *      **        *        ** ***      * **********    *    **
-           **  *   *        **** *   *           ***           ***   **
+           **  *   *        * ** *   *           ***           ***   **
            *   *   *        *    *   **                *   *****      **
-           *  **   *        ***      ****    x    ******* ***     **   **
+           *  **   *        ***      ****    #    ******* ***     **   **
            *      **          ***    *  *********  *       ***     *    **
-           *   **  *            ***             *     v*   * **   **********
+           *   **  *            ***             *     #*   * **   **********
            *    *  *              ***     ****  *  ** **   *  **           *
-           ****    *                ***      **    *       *   **    Ing   *
-           * O     *                  ***       *          *    **         *
+           ****    *                ***      **    *       *   **    exit  *
+           * o     *                  ***       *          *    **         *
            *********                    ********************     ***********
-
-### TCK == Technische ComputerKunde (Dutch, Computer Engineering)
-
-### Ing == HBO ingenieur (Dutch, bachelor of engineering degree)

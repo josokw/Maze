@@ -20,9 +20,9 @@
 #define DEMONS 8
 
 typedef struct {
-    int ScrnX;
-    int ScrnY;
-    char Player;
+   int ScrnX;
+   int ScrnY;
+   char Player;
 } scrnPosXY_t;
 
 extern scrnPosXY_t player;
