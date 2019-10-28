@@ -6,18 +6,10 @@
 #define FALSE 0
 #define TRUE 1
 
-#define SCRNMINX 3
-#define SCRNMAXX 130
-#define SCRNMINY 2
-#define SCRNMAXY 50
-
 #define UP 1
 #define DOWN 2
 #define RIGHT 3
 #define LEFT 4
-
-#define SPACE ' '
-#define DEMONS 8
 
 typedef struct {
    int ScrnX;

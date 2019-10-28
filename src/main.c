@@ -1,4 +1,5 @@
 #include "AppInfo.h"
+#include "ConfigMaze.h"
 #include "Maze.h"
 #include "Utils.h"
 
@@ -6,6 +7,8 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+#define SLEEP_US 50000
 
 #define GRASS ' '
 #define GRASS_PAIR 1
@@ -51,13 +54,13 @@ int main(int argc, char *argv[])
    init_pair(GRASS_PAIR, COLOR_YELLOW, COLOR_GREEN);
 
    clear();
-   //draw_map();
+   // draw_map();
 
    drawXY(&player);
    viewEcho();
    /* wait for RIGHT-arrow key */
    while (testArrowKey() != RIGHT) {
-      usleep(50000);
+      usleep(SLEEP_US);
    }
    startTime = time(NULL);
    while (!isAtExit()) {
@@ -70,7 +73,7 @@ int main(int argc, char *argv[])
          viewEcho();
       }
       showTime(startTime, time(NULL), 1, 15);
-      usleep(50000);
+      usleep(SLEEP_US);
    }
    refresh();
    nodelay(stdscr, FALSE);

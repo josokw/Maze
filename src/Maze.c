@@ -1,5 +1,6 @@
 #include "Maze.h"
 #include "AppInfo.h"
+#include "ConfigMaze.h"
 #include "Utils.h"
 
 #include <ncurses.h>
@@ -7,9 +8,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-
-#define ATEXIT_Y 18
-#define ATEXIT_X 65
 
 static char maze[SCRNMAXX + 1][SCRNMAXY + 1] = {{0, 0}};
 
