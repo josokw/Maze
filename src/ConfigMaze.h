@@ -10,6 +10,6 @@
 #define ATEXIT_X 65
 
 #define SPACE ' '
-#define DEMONS 8
+#define NDEMONS 8
 
 #endif

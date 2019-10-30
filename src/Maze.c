@@ -12,7 +12,7 @@
 static char maze[SCRNMAXX + 1][SCRNMAXY + 1] = {{0, 0}};
 
 scrnPosXY_t player;
-scrnPosXY_t demons[DEMONS];
+scrnPosXY_t demons[NDEMONS];
 
 static void initMaze(void)
 {
@@ -30,7 +30,7 @@ void initPlayerDemons(char *PlayerDemons, char demon, int posX, int posY)
 {
    static int idx = 0;
 
-   if ((idx < DEMONS) && (demon != ' ')) {
+   if ((idx < NDEMONS) && (demon != ' ')) {
       if (strchr(PlayerDemons, demon) != NULL) {
          if (demon == PlayerDemons[0]) {
             player.Player = demon;

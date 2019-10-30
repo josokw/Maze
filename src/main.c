@@ -10,9 +10,6 @@
 
 #define SLEEP_US 50000
 
-#define GRASS ' '
-#define GRASS_PAIR 1
-
 void handleResize(int signal)
 {
    clear();
@@ -44,17 +41,15 @@ int main(int argc, char *argv[])
    curs_set(0);
    nodelay(stdscr, TRUE);
 
-   if (!has_colors()) {
-      endwin();
-      fprintf(stderr, "\n\tERROR: your terminal does not support color\n\n");
-      exit(EXIT_FAILURE);
-   }
+   // if (!has_colors()) {
+   //    endwin();
+   //    fprintf(stderr, "\n\tERROR: your terminal does not support color\n\n");
+   //    exit(EXIT_FAILURE);
+   // }
 
    start_color();
-   init_pair(GRASS_PAIR, COLOR_YELLOW, COLOR_GREEN);
 
    clear();
-   // draw_map();
 
    drawXY(&player);
    viewEcho();
@@ -66,7 +61,7 @@ int main(int argc, char *argv[])
    while (!isAtExit()) {
       int i = 0;
       /* exit not reached !! */
-      for (i = 0; i < DEMONS; i++) {
+      for (i = 0; i < NDEMONS; i++) {
          playerAction();
          demonAction(&demons[i]);
          playerAction();
